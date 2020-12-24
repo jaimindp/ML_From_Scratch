@@ -100,12 +100,9 @@ class linear_layer:
         # only return backward_output, but need to compute self.gradient['W'] and self.gradient['b']                             #
         ##########################################################################################################################
 
-
-        backward_output = np.zeros((X.shape))
-
-
-        backward_output = X
-
+        self.gradient['W'] = np.dot(X.T,grad)
+        self.gradient['b'] = np.dot(grad, np.ones((grad.shape[1],1))) / len(X)
+        backward_output = np.dot(grad,self.params['W'].T)
 
         return backward_output
 
@@ -145,7 +142,12 @@ class relu:
         ################################################################################
         # TODO: Implement the relu forward pass. Store the result in forward_output    #
         ################################################################################
+        forward_output = np.maximum(0,X)
 
+        print(X.shape)
+        print(forward_output.shape)
+        print(forward_output)
+        
         return forward_output
 
     def backward(self, X, grad):
