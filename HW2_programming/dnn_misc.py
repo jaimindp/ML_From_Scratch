@@ -101,7 +101,8 @@ class linear_layer:
         ##########################################################################################################################
 
         self.gradient['W'] = np.dot(X.T,grad)
-        self.gradient['b'] = np.dot(grad, np.ones((grad.shape[1],1))) / len(X)
+        # self.gradient['b'] = np.dot(grad, np.ones((grad.shape[1],1))) / len(X)
+        self.gradient['b'] = np.sum(grad, axis=0, keepdims=True)
         backward_output = np.dot(grad,self.params['W'].T)
 
         return backward_output
@@ -142,11 +143,8 @@ class relu:
         ################################################################################
         # TODO: Implement the relu forward pass. Store the result in forward_output    #
         ################################################################################
+        self.mask = (X > 0).astype(float)
         forward_output = np.maximum(0,X)
-
-        print(X.shape)
-        print(forward_output.shape)
-        print(forward_output)
         
         return forward_output
 
@@ -177,6 +175,8 @@ class relu:
         # backward_output = ? (A numpy array of the shape of X, the gradient of the mini-batch loss w.r.t. X)                    #
         # PLEASE follow the Heaviside step function defined in CSCI567_HW2.pdf                                                   #
         ##########################################################################################################################
+
+        backward_output = np.multiply(self.mask, grad)
 
         return backward_output
 
@@ -222,7 +222,7 @@ class dropout:
         ################################################################################
 
         if is_train:
-            self.mask = (np.random.uniform(0.0, 1.0, X.shape) >= self.r).astype(float) * (1.0 / (1.0 - self.r))
+            self.mask = (np.random.uniform(0.0, 1.0, X.shape) >= self.r).astype(float) 
         else:
             self.mask = np.ones(X.shape)
         forward_output = np.multiply(X, self.mask)
@@ -255,6 +255,8 @@ class dropout:
         # backward_output = ? (A numpy array of the shape of X, the gradient of the mini-batch loss w.r.t. X)                    #
         # PLEASE follow the formula shown in the homework pdf                                                                    #
         ##########################################################################################################################
+
+        backward_output = np.multiply(grad, self.mask)
 
         return backward_output
 
