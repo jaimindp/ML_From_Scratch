@@ -17,6 +17,10 @@ def objective_function(X, y, w, lamb):
     # you need to fill in your solution here
 
 
+    ywx = np.dot(y, np.dot(X,w))
+    hinge = np.maximum(0, 1 - ywx)
+    obj_value = lamb / 2 * np.dot(w.T, w) + 1/len(y) * hinge 
+
     return obj_value
 
 
@@ -44,10 +48,29 @@ def pegasos_train(Xtrain, ytrain, w, lamb, k, max_iterations):
     train_obj = []
 
     for iter in range(1, max_iterations + 1):
+
         A_t = np.floor(np.random.rand(k) * N).astype(int)  # index of the current mini-batch
 
-        # you need to fill in your solution here
 
+        # X_t = Xtrain[A_t, :]
+        # y_t = ytrain[A_t].reshape(-1, 1)
+        # A_plus = ((y_t * np.dot(X_t, w)) < 1).astype(int)
+        # eta = 1.0 / (lamb * iter)
+        # w_half = (1 - eta * lamb) * w + eta / k * np.dot(A_plus.T, np.tile(y_t,(1, D)) * X_t).T
+        # print(w_half)
+        # w = w_half * min(1., (1./np.sqrt(lamb)) / np.linalg.norm(w_half))
+        # obj_t = objective_function(Xtrain, ytrain, w, lamb)
+
+
+        y_col = ytrain[A_t].reshape((k, 1))        
+        A_plus =  np.multiply(y_col,np.dot(Xtrain[A_t],w))
+        A_plus_mask = (A_plus < 1).astype(int)
+        eta = 1/(lamb*iter)
+        w_1_2 = (1-eta* lamb) * w + eta/k * np.dot(A_plus_mask.T, np.multiply(y_col, Xtrain[A_t])).T
+        w = np.minimum(1, 1/lamb**0.5/np.linalg.norm(w_1_2))  * w_1_2
+        obj_t = objective_function(Xtrain, ytrain, w, lamb)
+
+        # break
 
     return w, train_obj
 
@@ -65,6 +88,18 @@ def pegasos_test(Xtest, ytest, w_l):
     """
     # you need to fill in your solution here
 
+    wx = np.dot(np.array(Xtest), w_l)
+    test_acc = np.sum(np.multiply(wx.T, np.array(ytest)) > 0) / len(ytest)
+
+
+
+    # Xtest = np.array(Xtest)
+    # ytest = np.array(ytest).reshape([-1, 1])
+    # N = Xtest.shape[0]
+    # D = Xtest.shape[1]
+
+    # y_hat = np.dot(Xtest, w_l)
+    # test_acc = np.sum((y_hat * ytest) > 0) / N
 
     return test_acc
 
