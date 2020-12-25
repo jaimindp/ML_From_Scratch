@@ -70,8 +70,6 @@ def pegasos_train(Xtrain, ytrain, w, lamb, k, max_iterations):
         w = np.minimum(1, 1/lamb**0.5/np.linalg.norm(w_1_2))  * w_1_2
         obj_t = objective_function(Xtrain, ytrain, w, lamb)
 
-        # break
-
     return w, train_obj
 
 
