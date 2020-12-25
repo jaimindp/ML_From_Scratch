@@ -222,7 +222,7 @@ class dropout:
         ################################################################################
 
         if is_train:
-            self.mask = (np.random.uniform(0.0, 1.0, X.shape) >= self.r).astype(float) 
+            self.mask = (np.random.uniform(0.0, 1.0, X.shape) >= self.r).astype(float) / (1.0 - self.r)
         else:
             self.mask = np.ones(X.shape)
         forward_output = np.multiply(X, self.mask)
