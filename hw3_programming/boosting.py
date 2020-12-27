@@ -16,7 +16,7 @@ class Boosting(Classifier):
 	
 		self.clfs_picked = [] # list of h_t for t=0,...,T-1
 		self.betas = []       # list of beta_t for t=0,...,T-1
-		# self.errors = []
+		self.errors = []
 		return
 
 	@abstractmethod
@@ -50,70 +50,32 @@ class AdaBoost(Boosting):
 		############################################################
 		# init. 
 
-		D_0 = 1/len(features)
-		for i in range(len(self.T))
+		label_arr = np.array(labels)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		# N = len(features)
-		# w = 1/N * np.ones(N)
-		
-		# # loop utill T
-		# for t in range(self.T):
-		# 	epsilon_t = 1e5
-		# 	self.errors.append([])
-		# 	# loop through all clfs
-		# 	for clf in self.clfs:
-		# 		pred = clf.predict(features)
-		# 		epsilon = np.sum(w*(pred != np.array(labels)))
-		# 		self.errors[t].append(epsilon)
-		# 		if epsilon < epsilon_t:
-		# 			epsilon_t = epsilon
-		# 			clf_t = clf
-		# 			pred_t = pred
-		# 	# update
-		# 	beta_t = 0.5 * np.log((1-epsilon_t)/epsilon_t)
-		# 	w *= (np.exp(-beta_t)*(np.array(labels)==pred_t) + np.exp(beta_t)*(np.array(labels)!=pred_t))
-		# 	w /= np.sum(w)
-		# 	self.clfs_picked.append(clf_t)
-		# 	self.betas.append(beta_t)
+		D = np.array([1/len(features) for i in range(len(labels))])
+		for i in range(self.T):
 			
+			epsilon_t = float('inf')
+			model = None
+			best_preds = None
+			for j in self.clfs:
+				pred = np.array(j.predict(features))
+				epsilon = np.dot(D,np.array(pred != label_arr).astype(int))
+				if epsilon < epsilon_t:
+					epsilon_t = epsilon
+					model = j
+					best_preds = pred
 
-			# self.w = w
+			beta_t = 0.5 * np.log((1-epsilon_t)/epsilon_t)
+			sign = np.array(best_preds != label_arr).astype(int)
+			sign = np.array(list(map(lambda x : x + (x-1), sign)))
+
+			D *= np.exp(beta_t * sign)
+			D /= np.sum(D)
+
+			self.clfs_picked.append(model)
+			self.betas.append(beta_t)
+
 		return
 
 		
