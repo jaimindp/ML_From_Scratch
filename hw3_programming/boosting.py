@@ -6,7 +6,6 @@ from decision_stump import DecisionStump
 from abc import abstractmethod
 
 class Boosting(Classifier):
-  # Boosting from pre-defined classifiers
 	def __init__(self, clfs: Set[Classifier], T=0):
 		self.clfs = clfs      # set of weak classifiers to be considered
 		self.num_clf = len(clfs)
@@ -15,26 +14,29 @@ class Boosting(Classifier):
 		else:
 			self.T = T
 	
-		self.clfs_picked = [] # list of classifiers h_t for t=0,...,T-1
-		self.betas = []       # list of weights beta_t for t=0,...,T-1
+		self.clfs_picked = [] # list of h_t for t=0,...,T-1
+		self.betas = []       # list of beta_t for t=0,...,T-1
+		# self.errors = []
 		return
+
+	@abstractmethod
 
 	@abstractmethod
 	def train(self, features: List[List[float]], labels: List[int]):
 		return
 
 	def predict(self, features: List[List[float]]) -> List[int]:
-		'''
-		Inputs:
-		- features: the features of all test examples
-   
-		Returns:
-		- the prediction (-1 or +1) for each example (in a list)
-		'''
 		########################################################
-		# TODO: implement "predict"
+		# TODO
 		########################################################
-		
+		total_preds = np.zeros((len(features)))
+		for idx in range(len(self.clfs_picked)):
+			preds = self.clfs_picked[idx].predict(features)
+			total_preds += np.inner(self.betas[idx], preds)
+		total_preds = np.sign(total_preds).tolist()
+
+		return total_preds
+
 
 class AdaBoost(Boosting):
 	def __init__(self, clfs: Set[Classifier], T=0):
@@ -43,22 +45,78 @@ class AdaBoost(Boosting):
 		return
 		
 	def train(self, features: List[List[float]], labels: List[int]):
-		'''
-		Inputs:
-		- features: the features of all examples
-		- labels: the label of all examples
-   
-		Require:
-		- store what you learn in self.clfs_picked and self.betas
-		'''
 		############################################################
-		# TODO: implement "train"
+		# TODO
 		############################################################
+		# init. 
+
+		D_0 = 1/len(features)
+		for i in range(len(self.T))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		# N = len(features)
+		# w = 1/N * np.ones(N)
 		
+		# # loop utill T
+		# for t in range(self.T):
+		# 	epsilon_t = 1e5
+		# 	self.errors.append([])
+		# 	# loop through all clfs
+		# 	for clf in self.clfs:
+		# 		pred = clf.predict(features)
+		# 		epsilon = np.sum(w*(pred != np.array(labels)))
+		# 		self.errors[t].append(epsilon)
+		# 		if epsilon < epsilon_t:
+		# 			epsilon_t = epsilon
+		# 			clf_t = clf
+		# 			pred_t = pred
+		# 	# update
+		# 	beta_t = 0.5 * np.log((1-epsilon_t)/epsilon_t)
+		# 	w *= (np.exp(-beta_t)*(np.array(labels)==pred_t) + np.exp(beta_t)*(np.array(labels)!=pred_t))
+		# 	w /= np.sum(w)
+		# 	self.clfs_picked.append(clf_t)
+		# 	self.betas.append(beta_t)
+			
+
+			# self.w = w
+		return
+
 		
 	def predict(self, features: List[List[float]]) -> List[int]:
 		return Boosting.predict(self, features)
 
-
-
-	

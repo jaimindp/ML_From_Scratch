@@ -23,4 +23,5 @@ class DecisionStump(Classifier):
 		##################################################
 		# TODO: implement "predict"
 		##################################################
-		
+
+		return [self.s if i[self.d] > self.b else -self.s for i in features]
