@@ -38,11 +38,29 @@ class KMeans():
         # - return (means, membership, number_of_updates)
         
         J = float('inf')
-
-        print(np.random.choice(N, self.n_cluster))
-        print(x[np.random.choice(N, self.n_cluster)])
         clusters = x[np.random.choice(N, self.n_cluster)]
-        
+        old_clusters = clusters
+        for i in range(self.max_iter):
+            distances = np.zeros((N,self.n_cluster))
+
+            for i, cluster in enumerate(clusters):
+                for n in range(N):
+                    distances[n,i] = np.linalg.norm(np.array(cluster) - x[n,:])
+
+            classes = np.argmin(distances,axis=1)
+            classes_oh = np.eye(self.n_cluster)[classes]
+            # print(np.dot(classes_oh.T, x))
+            # print(np.sum(classes_oh,axis=0))
+
+            clusters = np.divide(np.dot(classes_oh.T, x),np.sum(classes_oh,axis=0)[:,None])
+            
+            if np.array_equal(old_clusters, clusters):
+                print(clusters)
+                break
+
+
+
+
 
 
 
