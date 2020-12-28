@@ -103,25 +103,68 @@ class TreeNode(object):
 			return entropy
 			
  
-		
+		CE_min = 1e5
+		features_np = np.array(self.features)
+		if features_np.shape[1] == 0:
+			self.splittable = False
+
 		for idx_dim in range(len(self.features[0])):
 		############################################################
 		# TODO: compare each split using conditional entropy
 		#       find the best split
 		############################################################
 
+			feature = np.array(self.features)[:, idx_dim]
+			print(feature)
+			feature_uniq = np.unique(feature).tolist()
+			print(feature_uniq)
+			num_branch = len(feature_uniq)
+			print(num_branch)
+		
+			if num_branch < 2:
+				continue
 
+			branches = []
+			for idx_cls in range(self.num_cls):
+				branches.append([0]*num_branch)
 
+			print(self.labels)
+			for idx_element, element in enumerate(feature):
+				branches[self.labels[idx_element]][feature_uniq.index(element)] += 1
+
+			print(branches)
+
+			# CE
+			CE_branch = conditional_entropy(branches)
+			if CE_branch < CE_min:
+				CE_min = CE_branch
+				self.dim_split = idx_dim
+				self.feature_uniq_split = feature_uniq
+
+		if CE_min == 1e5:
+			self.splittable = False
+			return
 
 		############################################################
 		# TODO: split the node, add child nodes
 		############################################################
-
-
-
-
-		# split the child nodes
-		for child in self.children:
+		# split from dim_split
+		for idx_branch in range(len(feature_uniq)):
+			child_features = []
+			child_labels = []
+			for idx_element in range(len(self.features)):
+				if features_np[idx_element, self.dim_split] == feature_uniq[idx_branch]:
+					new_feature_np = np.concatenate((features_np[idx_element,:self.dim_split],
+						                         features_np[idx_element, self.dim_split+1:]))
+					child_features.append(new_feature_np.tolist())
+					child_labels.append(self.labels[idx_element])
+			
+			if len(child_labels) == len(self.labels):
+				self.splittable = False
+				return
+			
+			child = TreeNode(child_features, child_labels, self.num_cls)
+			self.children.append(child)
 			if child.splittable:
 				child.split()
 
