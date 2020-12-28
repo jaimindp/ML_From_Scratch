@@ -17,7 +17,7 @@ class KMeans():
         self.e = e
 
     def fit(self, x):
-       '''
+        '''
             Finds n_cluster in the data x
             params:
                 x - N X D numpy array
@@ -25,7 +25,8 @@ class KMeans():
                 A tuple
                 (centroids a n_cluster X D numpy array, y a size (N,) numpy array where cell i is the ith sample's assigned cluster, number_of_updates an Int)
             Note: Number of iterations is the number of time you update the assignment
-        ''' 
+        '''
+        
         assert len(x.shape) == 2, "fit function takes 2-D numpy arrays as input"
         np.random.seed(42)
         N, D = x.shape
@@ -35,10 +36,71 @@ class KMeans():
         # - Initialize means by picking self.n_cluster from N data points
         # - Update means and membership until convergence or until you have made self.max_iter updates.
         # - return (means, membership, number_of_updates)
+        
+        J = float('inf')
+
+        print(np.random.choice(N, self.n_cluster))
+        print(x[np.random.choice(N, self.n_cluster)])
+        clusters = x[np.random.choice(N, self.n_cluster)]
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # idxes = np.random.choice(N, self.n_cluster)
+        # means = x[idxes,:]
+
+        # def euclidean(mat1, vector2):
+        #     d = np.sqrt(np.sum(np.square(np.subtract(mat1, vector2)), axis=-1))
+        #     return d
+
+        # iters = 0
+        # oldmeans = 0
+        # while ((iters < self.max_iter) and not np.array_equal(means, oldmeans)):
+        #     dmat = np.zeros((N,self.n_cluster))
+        #     for i in np.arange(self.n_cluster):
+        #         dmat[:,i] = euclidean(x, means[i,:])
+        #     oldmeans = means.copy()
+        #     memships = np.argmin(dmat, axis=1)
+        #     for value in np.arange(self.n_cluster):
+        #         mask = (memships == value)
+        #         means[value,:] = np.mean(x[mask,:], axis=0)
+        #     iters = iters+1
+            
+        # return (means, memships, iters)
+        # for i in self.max_iter:
+
 
         # DONOT CHANGE CODE ABOVE THIS LINE
-        raise Exception(
-            'Implement fit function in KMeans class (filename: kmeans.py)')
+        # raise Exception(
+            # 'Implement fit function in KMeans class (filename: kmeans.py)')
         # DONOT CHANGE CODE BELOW THIS LINE
 
 class KMeansClassifier():
@@ -83,8 +145,8 @@ class KMeansClassifier():
         # - assign labels to centroid_labels
 
         # DONOT CHANGE CODE ABOVE THIS LINE
-        raise Exception(
-            'Implement fit function in KMeansClassifier class (filename: kmeans.py)')
+        # raise Exception(
+            # 'Implement fit function in KMeansClassifier class (filename: kmeans.py)')
 
         # DONOT CHANGE CODE BELOW THIS LINE
 
@@ -117,8 +179,8 @@ class KMeansClassifier():
         # - return labels
 
         # DONOT CHANGE CODE ABOVE THIS LINE
-        raise Exception(
-            'Implement predict function in KMeansClassifier class (filename: kmeans.py)')
+        # raise Exception(
+            # 'Implement predict function in KMeansClassifier class (filename: kmeans.py)')
         # DONOT CHANGE CODE BELOW THIS LINE
         return labels
 
