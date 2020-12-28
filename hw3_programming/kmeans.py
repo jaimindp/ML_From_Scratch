@@ -101,17 +101,15 @@ class KMeansClassifier():
         # - Implement the classifier
         # - assign means to centroids
         # - assign labels to centroid_labels
-
-        # centroid_labels = []
-        # kmean = KMeans()
-        # clusters, classes, iterations = kmean.fit(x)
+        print('hi')
+        centroid_labels = []
+        kmean = KMeans()
+        clusters, classes, iterations = kmean.fit(x)
         # print(clusters, classes, iterations)
         # centroids = clusters
         # centroid_labels = clusters
         # print(x,y)
         # counts = Counter(classes)
-
-
 
         # DONOT CHANGE CODE ABOVE THIS LINE
         # raise Exception(

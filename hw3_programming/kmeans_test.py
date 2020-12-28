@@ -30,11 +30,15 @@ def transform_image(image, code_vectors):
     # - comment/remove the exception
     # - implement the function
 
-    # DONOT CHANGE CODE ABOVE THIS LINE
-    raise Exception(
-        'Implement transform_image function (filename:kmeansTest.py)')
-    # DONOT CHANGE CODE BELOW THIS LINE
+    distances = np.zeros((image.shape[0],image.shape[1],code_vectors.shape[0]))
+
+    for i in range(code_vectors.shape[0]):
+        distances[:,:,i] = np.sum((image - code_vectors[i,:])**2, axis=2)
+    mindist = np.argmin(distances,axis = -1)
+    new_im = code_vectors[mindist]
+
     return new_im
+
 
 ################################################################################
 # KMeans on 2D toy dataset
