@@ -88,20 +88,22 @@ class TreeNode(object):
 			########################################################
 			# TODO: compute the conditional entropy
 			########################################################
+
+
 			entropy = 0
 			branch_arr = np.array(branches)
-			
-			branch_sum = np.sum(branch_arr, axis = 0)
+			branch_sum = np.sum(branch_arr, axis=0)
 			tot = np.sum(branch_arr)
 
-			for b in range(len(branches)):
-				for c in range(len(c)):
-					entropy -= branch_sum[b] / tot * np.log2(branch_arr[c][b]/branch_sum[b])
+			for c in range(len(branches)):
+				for b in range(len(branches[c])):
+					if branch_sum[b] != 0 and tot != 0 and branch_arr[c][b] != 0:
+						entropy -= branch_sum[b] / tot * np.log2(branch_arr[c][b] / branch_sum[b])
 
-			print(entropy)
-
-
+			return entropy
 			
+ 
+		
 		for idx_dim in range(len(self.features[0])):
 		############################################################
 		# TODO: compare each split using conditional entropy
