@@ -101,15 +101,27 @@ class KMeansClassifier():
         # - Implement the classifier
         # - assign means to centroids
         # - assign labels to centroid_labels
-        print('hi')
+        
+        # print('hi')
+        # centroid_labels = []
+        # kmean = KMeans()
+        # clusters, classes, iterations = kmean.fit(x)
+
+        k_means = KMeans(self.n_cluster, max_iter=self.max_iter, e=self.e)
+        centroids, membership, _ = k_means.fit(x)
+
         centroid_labels = []
-        kmean = KMeans()
-        clusters, classes, iterations = kmean.fit(x)
-        # print(clusters, classes, iterations)
-        # centroids = clusters
-        # centroid_labels = clusters
-        # print(x,y)
-        # counts = Counter(classes)
+        for i in range(self.n_cluster):
+            y_ = y[(membership == i)]
+            if (y_.size > 0):
+                _, idx, counts = np.unique(
+                    y_, return_index=True, return_counts=True)
+
+                index = idx[np.argmax(counts)]
+                centroid_labels.append(y_[index])
+            else:
+                centroid_labels.append(0)
+        centroid_labels = np.array(centroid_labels)
 
         # DONOT CHANGE CODE ABOVE THIS LINE
         # raise Exception(
@@ -145,9 +157,22 @@ class KMeansClassifier():
         # - Implement the prediction algorithm
         # - return labels
 
+        #     'Implement predict function in KMeansClassifier class (filename: kmeans.py')
+        n_cluster = self.centroids.shape[0]
+        N = x.shape[0]
+        distances = np.zeros((N, n_cluster))
+
+        for i in range(n_cluster):
+            distances[:, i] = np.sum((x-self.centroids[i])**2, axis=1)
+        centroid_idx = np.argmin(distances, axis=1)
+        labels = []
+        for i in centroid_idx:
+            labels.append(self.centroid_labels[i])
+        return np.array(labels)
+
         # DONOT CHANGE CODE ABOVE THIS LINE
         # raise Exception(
             # 'Implement predict function in KMeansClassifier class (filename: kmeans.py)')
         # DONOT CHANGE CODE BELOW THIS LINE
-        return labels
+        # return labels
 
