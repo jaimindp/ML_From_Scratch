@@ -1,5 +1,5 @@
 import numpy as np
-
+# from Collections import Counter
 
 class KMeans():
 
@@ -37,84 +37,24 @@ class KMeans():
         # - Update means and membership until convergence or until you have made self.max_iter updates.
         # - return (means, membership, number_of_updates)
         
-        J = float('inf')
         clusters = x[np.random.choice(N, self.n_cluster)]
         old_clusters = clusters
         for i in range(self.max_iter):
             distances = np.zeros((N,self.n_cluster))
 
             for i, cluster in enumerate(clusters):
-                for n in range(N):
-                    distances[n,i] = np.linalg.norm(np.array(cluster) - x[n,:])
+                distances[:, i] = np.sum((x-cluster)**2, axis=1)
 
             classes = np.argmin(distances,axis=1)
             classes_oh = np.eye(self.n_cluster)[classes]
-            # print(np.dot(classes_oh.T, x))
-            # print(np.sum(classes_oh,axis=0))
-
             clusters = np.divide(np.dot(classes_oh.T, x),np.sum(classes_oh,axis=0)[:,None])
             
             if np.array_equal(old_clusters, clusters):
-                print(clusters)
                 break
+            old_clusters = clusters
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        # idxes = np.random.choice(N, self.n_cluster)
-        # means = x[idxes,:]
-
-        # def euclidean(mat1, vector2):
-        #     d = np.sqrt(np.sum(np.square(np.subtract(mat1, vector2)), axis=-1))
-        #     return d
-
-        # iters = 0
-        # oldmeans = 0
-        # while ((iters < self.max_iter) and not np.array_equal(means, oldmeans)):
-        #     dmat = np.zeros((N,self.n_cluster))
-        #     for i in np.arange(self.n_cluster):
-        #         dmat[:,i] = euclidean(x, means[i,:])
-        #     oldmeans = means.copy()
-        #     memships = np.argmin(dmat, axis=1)
-        #     for value in np.arange(self.n_cluster):
-        #         mask = (memships == value)
-        #         means[value,:] = np.mean(x[mask,:], axis=0)
-        #     iters = iters+1
-            
-        # return (means, memships, iters)
-        # for i in self.max_iter:
-
+        # print(clusters,classes, i+1)
+        return (clusters, classes, i+1)
 
         # DONOT CHANGE CODE ABOVE THIS LINE
         # raise Exception(
@@ -161,6 +101,17 @@ class KMeansClassifier():
         # - Implement the classifier
         # - assign means to centroids
         # - assign labels to centroid_labels
+
+        # centroid_labels = []
+        # kmean = KMeans()
+        # clusters, classes, iterations = kmean.fit(x)
+        # print(clusters, classes, iterations)
+        # centroids = clusters
+        # centroid_labels = clusters
+        # print(x,y)
+        # counts = Counter(classes)
+
+
 
         # DONOT CHANGE CODE ABOVE THIS LINE
         # raise Exception(
