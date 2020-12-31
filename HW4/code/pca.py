@@ -23,11 +23,21 @@ def pca(X = np.array([]), no_dims = 50):
     """TODO: write your code here"""
     ''' Compute the covariance matrix, get mean of each dimension'''
 
-    means = np.mean(X,axis = 0)
-    print(means)
+    means = np.mean(X,axis=0)
+    Xj = X - means
+    cov = np.dot(Xj.T,Xj) / (X.shape[0]-1)
+
+    eig_vals, eig_vecs = np.linalg.eig(cov)
+
+    # print(eig_vals)
+    print(eig_vecs.shape)
+
+    M = eig_vecs[:,:no_dims]
+    print(M.shape)
+    Y = np.dot(X, M)
+    print(Y.shape)
 
 
-    
     return Y, M
 
 def decompress(Y = np.array([]), M = np.array([])):
@@ -48,6 +58,9 @@ def decompress(Y = np.array([]), M = np.array([])):
     X_hat = np.array([])
 
     """TODO: write your code here"""
+    X_hat = np.dot(Y,M.T)
+
+
     
     return X_hat
 
@@ -61,6 +74,7 @@ def reconstruction_error(orig = np.array([]), decompressed = np.array([])):
     """
     error = 0
 
+    
     """TODO: write your code here"""
     
     return error
