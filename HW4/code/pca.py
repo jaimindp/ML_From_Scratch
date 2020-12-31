@@ -29,13 +29,10 @@ def pca(X = np.array([]), no_dims = 50):
 
     eig_vals, eig_vecs = np.linalg.eig(cov)
 
-    # print(eig_vals)
-    print(eig_vecs.shape)
 
     M = eig_vecs[:,:no_dims]
-    print(M.shape)
     Y = np.dot(X, M)
-    print(Y.shape)
+
 
 
     return Y, M
@@ -58,10 +55,7 @@ def decompress(Y = np.array([]), M = np.array([])):
     X_hat = np.array([])
 
     """TODO: write your code here"""
-    X_hat = np.dot(Y,M.T)
-
-
-    
+    X_hat = np.dot(Y,M.T)    
     return X_hat
 
 def reconstruction_error(orig = np.array([]), decompressed = np.array([])):
@@ -74,10 +68,7 @@ def reconstruction_error(orig = np.array([]), decompressed = np.array([])):
     """
     error = 0
 
-    error = np.mean(np.dot((orig - decompressed).T,(orig - decompressed)))
-    print(error)
-
-    """TODO: write your code here"""
+    error = np.mean(np.linalg.norm(orig-decompressed))**2 / orig.shape[-1]
     
     return error
 
