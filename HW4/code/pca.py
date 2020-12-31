@@ -21,8 +21,12 @@ def pca(X = np.array([]), no_dims = 50):
     M = np.array([])
 
     """TODO: write your code here"""
+    ''' Compute the covariance matrix, get mean of each dimension'''
 
-    
+    means = np.mean(X,axis = 0)
+    print(means)
+
+
     
     return Y, M
 
