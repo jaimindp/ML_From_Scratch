@@ -74,7 +74,9 @@ def reconstruction_error(orig = np.array([]), decompressed = np.array([])):
     """
     error = 0
 
-    
+    error = np.mean(np.dot((orig - decompressed).T,(orig - decompressed)))
+    print(error)
+
     """TODO: write your code here"""
     
     return error
