@@ -21,6 +21,8 @@ def pca(X = np.array([]), no_dims = 50):
     M = np.array([])
 
     """TODO: write your code here"""
+
+    
     
     return Y, M
 
