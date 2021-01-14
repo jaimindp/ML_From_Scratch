@@ -22,8 +22,13 @@ def forward(pi, A, B, O):
   ###################################################
   # Q3.1 Edit here
   ###################################################
+  print(pi.shape)
+  print(A.shape)
+  print(B.shape)
+  print(O.shape)
+  for i in range(S):
+    alpha[i] = 
 
-  for i in range()
 
 
   return alpha
