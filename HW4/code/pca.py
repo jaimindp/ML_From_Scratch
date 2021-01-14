@@ -66,7 +66,6 @@ def reconstruction_error(orig = np.array([]), decompressed = np.array([])):
     - orig: An array of size 1xD, original flattened image.
     - decompressed: An array of size 1xD, decompressed version of the image
     """
-    error = 0
 
     error = np.mean(np.linalg.norm(orig-decompressed))**2 / orig.shape[-1]
     
