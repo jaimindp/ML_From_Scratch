@@ -51,6 +51,23 @@ def backward(pi, A, B, O):
   # Q3.1 Edit here
   ###################################################
   
+  
+  beta[:,N-1] = pi
+  oh = np.eye
+  for t in range(N-2,-1,-1):
+    for i in range(S):
+
+      print(A[i,:].shape)
+      print(B[i,O[t]].shape)
+      print(beta[i,t].shape)
+
+      # print(np.dot(A[i,:],B[i,O[t]]).shape)
+      # print(np.dot(np.dot(A[i,:],B[i,O[t]]), beta[i,t]))
+
+      beta[i,t] = np.dot(A[i,:], B[i,O[t]] * beta[i,t+1])
+      exit()
+
+
   return beta
 
 def seqprob_forward(alpha):
