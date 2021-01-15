@@ -19,9 +19,6 @@ def forward(pi, A, B, O):
   S = len(pi)
   N = len(O)
   alpha = np.zeros([S, N])
-  ###################################################
-  # Q3.1 Edit here
-  ###################################################
 
   alpha[:,0] = pi * B[:,O[0]]
   for t in range(1,N):
@@ -47,9 +44,6 @@ def backward(pi, A, B, O):
   S = len(pi)
   N = len(O)
   beta = np.zeros([S, N])
-  ###################################################
-  # Q3.1 Edit here
-  ###################################################
   
   beta[:, N-1] = 1
   for t in range(N-2,-1,-1):
@@ -73,8 +67,7 @@ def seqprob_forward(alpha):
   # Q3.2 Edit here
   ###################################################
 
-  print(alpha.shape)
-  print(alpha)
+  prob = np.sum(alpha[:,alpha.shape[1]-1])
 
   return prob
 
@@ -94,10 +87,10 @@ def seqprob_backward(beta, pi, B, O):
   - prob: A float number of P(X_{1:N}=O)
   """
   prob = 0
-  ###################################################
-  # Q3.2 Edit here
-  ###################################################
-  
+
+  prob = np.sum(beta[:,0] * pi[:]  * B[:, O[0]])
+  print(prob)
+
   return prob
 
 def viterbi(pi, A, B, O):
@@ -114,14 +107,21 @@ def viterbi(pi, A, B, O):
   - path: A list of the most likely hidden state path (in terms of the state index)
   """
   path = []
-  ###################################################
-  # Q3.3 Edit here
-  ###################################################
-  
+
+  delta = np.zeros((len(pi), len(O)))
+  delta[:,0] = pi * B[:,O[0]]
+
+  for t in range(1, len(O)):
+    path.append(np.argmax(delta[:,t-1]))
+    for i in range(len(pi)):
+      delta[i,t] = B[i, O[t]] * np.argmax([A[j,i] * delta[j,t-1] for j in range(len(pi))])
+
+  path.append(np.argmax(delta[:,t-1]))
+
   return path
 
 
-##### DO NOT MODIFY ANYTHING BELOW THIS ###################
+
 def main():
   model_file = sys.argv[1]
   Osymbols = sys.argv[2]
