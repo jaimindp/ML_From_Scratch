@@ -72,7 +72,10 @@ def seqprob_forward(alpha):
   ###################################################
   # Q3.2 Edit here
   ###################################################
-  
+
+  print(alpha.shape)
+  print(alpha)
+
   return prob
 
 
