@@ -22,17 +22,7 @@ def forward(pi, A, B, O):
   ###################################################
   # Q3.1 Edit here
   ###################################################
-  
-  '''
-  z is a hidden state, there are 2 hidden states
-  There are 4 observation states
-  '''
 
-  # print(pi)
-  # print(A)
-  # print(B)
-  # print(O)
-  
   alpha[:,0] = pi * B[:,O[0]]
   for t in range(1,N):
     for i in range(S):
